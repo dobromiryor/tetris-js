@@ -19,6 +19,7 @@
 ## WIP
 - Display next tetromino
 - Better scoring
+- Sounds
 - High Score
 - Level system
 - Hard Drop
