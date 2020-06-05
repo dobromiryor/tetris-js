@@ -33,6 +33,7 @@ body{
     padding: 10px;
     border: 1px solid black;
     background: rgb(158, 173, 134);
+    color: rgb(66, 73, 55);
 }
 
 #tetris{
