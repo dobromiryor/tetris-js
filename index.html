@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>TETRIS</title>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body class='col aic jcc'>
+    <div id='display' class='row'>
+        <canvas id='tetris' width='200' height='400'></canvas>
+        <div id='sidebar'>
+            <div id='score-display' class='col jcc'>
+                <div id='score' class='digit'>0</div>
+                <div class='label'>Score</div>
+            </div>
+            <canvas id='next-piece' class='hidden' width='80' height='80'></canvas>
+            <div id='start-message' class=''>Press any arrow key to start</div>
+            <div id='end-message' class='hidden'>Game Over</div>
+        </div>
+    </div>
+    <div id='keys'>
+        <h3>Controls</h4>
+        <p>Left: Left Arrow</p>
+        <p>Right: Right Arrow</p>
+        <p>Rotate: Up Arrow</p>
+        <p>Soft Drop: Down Arrow</p>
+        <p>Reset Game: R</p>
+    </div>
+    
+    <!-- JS files -->
+    <script src='tetrominoes.js'></script>
+    <script src='app.js'> </script>
+</body>
+</html>

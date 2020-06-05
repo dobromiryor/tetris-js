@@ -1,0 +1,60 @@
+@font-face {font-family: "Digital-7"; src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot"); src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff") format("woff"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.svg#Digital-7") format("svg"); }
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500,700&display=swap');
+
+body{
+    font-family: 'Roboto Mono', monospace;
+    background-color: #333;
+}
+
+.row{
+    display: flex;
+}
+
+.col{
+    display: flex;
+    flex-direction: column;
+}
+
+.jcc{
+    justify-content: center;
+}
+
+.aic{ 
+    align-items: center;
+}
+
+.hidden{
+    display: none;
+}
+
+#display{
+    display: flex;
+    width: 300px;
+    padding: 10px;
+    border: 1px solid black;
+    background: rgb(158, 173, 134);
+}
+
+#tetris{
+	box-shadow: 0 0 0px 1px rgb(66, 73, 55);
+}
+
+#sidebar{
+    margin: 0 0 0 20px;
+}
+
+#score-display{
+    height: 40px;
+}
+
+#next-piece{
+	box-shadow: 0 0 0px 1px rgb(66, 73, 55);
+}
+
+.digit{
+    font-family: 'Digital-7'
+}
+
+#keys{
+    color: #ccc;
+}
