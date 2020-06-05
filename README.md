@@ -1,6 +1,6 @@
 # tetris-js
 
-> Simple Tetris game made with Vanilla JavaScript
+> Simple Tetris game made using JavaScript
 
 ## Controls
 - Left: Left Arrow
@@ -10,17 +10,17 @@
 - Reset Game: R
 
 ## Features
-- The basic tetris movements
-- All tetromino shapes and rotations
-- [Lock delay](https://strategywiki.org/wiki/Tetris/Features#Lock_delay)
-- [SRS](https://strategywiki.org/wiki/Tetris/Rotation_systems#Super_rotation_system)
-- [Wall kicks](https://strategywiki.org/wiki/Tetris/Rotation_systems#Wall_kicks)
+- [x] The basic tetris movements
+- [x] All tetromino shapes and rotations
+- [x] [Lock delay](https://strategywiki.org/wiki/Tetris/Features#Lock_delay)
+- [x] [SRS](https://strategywiki.org/wiki/Tetris/Rotation_systems#Super_rotation_system)
+- [x] [Wall kicks](https://strategywiki.org/wiki/Tetris/Rotation_systems#Wall_kicks)
+- [x] Next tetromino
 
-## WIP
-- Display next tetromino
-- Better scoring
-- Sounds
-- High Score
-- Level system
-- Hard Drop
-- Better styling
+## Planned
+- [ ] Better scoring
+- [ ] Sounds
+- [ ] High Score
+- [ ] Level system
+- [ ] Hard Drop
+- [ ] Better styling
