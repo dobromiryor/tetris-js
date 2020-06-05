@@ -19,10 +19,10 @@ const COL = COLUMN = 10;
 const SQ = squareSize = 20;
 
 // Next tetromino canvas row
-const NROW = 20;
+const NROW = 4;
 
 // Next tetromino canvas column
-const NCOL = COLUMN = 10;
+const NCOL = COLUMN = 4;
 
 // Next tetromino size of square
 const NSQ = squareSize = 20;
@@ -35,10 +35,6 @@ const FILLED = 'rgb(66, 73, 55)';
 
 // Score
 let score = 0;
-
-// Next tetromino
-let nextPiece;
-let currentPiece;
 
 // Draw a square
 function drawSquare(x, y, color){
@@ -82,7 +78,7 @@ let nextBoard = [];
 for(r = 0; r < NROW; r++){
     nextBoard[r] = [];
     for(c = 0; c < NCOL; c++){
-        nextBoard[r][c] = VACANT;
+        nextBoard = VACANT;
     }
 }
 
@@ -90,7 +86,7 @@ for(r = 0; r < NROW; r++){
 function drawNextBoard(){  
     for(r = 0; r < NROW; r++){
         for(c = 0; c < NCOL; c++){
-            drawNextSquare(c, r, nextBoard[r][c]);
+            drawNextSquare(c, r, nextBoard);
         }
     }
 }
@@ -102,6 +98,7 @@ function randomPiece(){
     return new Piece( PIECE[r], PIECE[r]);
 }
 let p = randomPiece();
+let nextPiece = randomPiece();
 
 // The Object Piece
 function Piece(tetromino){
@@ -117,20 +114,27 @@ function Piece(tetromino){
 }
 
 // Fill function
+
 Piece.prototype.fill = function(color){
-    for(r = 0; r < this.activeTetromino.length; r++){
-        for(c = 0; c < this.activeTetromino.length; c++){
+    for(r = 0; r < p.activeTetromino.length; r++){
+        for(c = 0; c < p.activeTetromino.length; c++){
             // draw only ocupied squares
-            if(this.activeTetromino[r][c]){
+            if(p.activeTetromino[r][c]){
                 drawSquare(this.x + c, this.y + r, color)
             }
         }
     }
-    for(r = 0; r < this.activeTetromino.length; r++){
-        for(c = 0; c < this.activeTetromino.length; c++){
-            // draw only ocupied squares
-            if(this.activeTetromino[r][c]){
-                drawNextSquare(0 + c, 0 + r, color)
+}
+
+// Fill next piece 
+Piece.prototype.fillNext = function(color){
+    for(r = 0; r < 3; r++){
+        for(c = 0; c < 4; c++){
+            // undraw old, draw new squares
+            if(!nextPiece.activeTetromino[r][c]){
+                drawNextSquare(0 + c, 0 + r, VACANT)
+            } else {
+                drawNextSquare(0 + c, 0 + r, FILLED)
             }
         }
     }
@@ -139,11 +143,13 @@ Piece.prototype.fill = function(color){
 // Draw the piece to the board
 Piece.prototype.draw = function(){
     this.fill(this.color);
+    this.fillNext(this.color);
 }
 
 // Remove the piece from the board
 Piece.prototype.unDraw = function(){
     this.fill(VACANT);
+    this.fillNext(VACANT);
 }
 
 // Move left the piece
@@ -167,14 +173,14 @@ Piece.prototype.moveRight = function (){
 // Move down the piece
 Piece.prototype.moveDown = function (){
     if(!this.collision(0, 1, this.activeTetromino)){
-       this.unDraw();
+        this.unDraw();
         this.y++;
         this.draw(); 
     }else{
         this.lock();
-        p = randomPiece();
+        p = nextPiece;
+        nextPiece = randomPiece();
     }
-    
 }
 
 // Rotate the piece
@@ -198,10 +204,7 @@ Piece.prototype.rotate = function (){
         this.activeTetromino = this.tetromino[this.tetrominoN];
         this.draw();
     }
-
 }
-
-
 
 // Lock piece in place
 Piece.prototype.lock = function(){
