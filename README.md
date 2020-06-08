@@ -16,11 +16,11 @@
 - [x] [SRS](https://strategywiki.org/wiki/Tetris/Rotation_systems#Super_rotation_system)
 - [x] [Wall kicks](https://strategywiki.org/wiki/Tetris/Rotation_systems#Wall_kicks)
 - [x] Next tetromino
+- [x] Level system
+- [x] Better scoring (missing hard/soft drop bonus)
 
 ## Planned
-- [ ] Better scoring
 - [ ] Sounds
 - [ ] High Score
-- [ ] Level system
 - [ ] Hard Drop
 - [ ] Better styling
