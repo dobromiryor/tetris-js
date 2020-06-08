@@ -1,4 +1,6 @@
 const scoreElement = document.getElementById('score');
+const clearsElement = document.getElementById('clears');
+const levelElement = document.getElementById('level');
 const cvs = document.getElementById('tetris');
 const ctx = cvs.getContext('2d');
 const nextCvs = document.getElementById('next-piece');
@@ -35,6 +37,12 @@ const FILLED = 'rgb(66, 73, 55)';
 
 // Score
 let score = 0;
+
+// Clears
+let clears = 0;
+
+// Level
+let level = 0;
 
 // Draw a square
 function drawSquare(x, y, color){
@@ -206,8 +214,9 @@ Piece.prototype.rotate = function (){
     }
 }
 
-// Lock piece in place
+// Lock piece in place 
 Piece.prototype.lock = function(){
+    let clearedRows = 0;
     for(r = 0; r < this.activeTetromino.length; r++){
         for(c = 0; c < this.activeTetromino.length; c++){
             // skip vacant squares
@@ -233,6 +242,7 @@ Piece.prototype.lock = function(){
             isRowFull = isRowFull && (board[r][c]  != VACANT);
         }
         if(isRowFull){ // if roll is full, then clear it
+            clearedRows += 1;
             // remove one from bottom
             for(y = r; y > 1; y--){
                 for(c = 0; c < COL; c++){
@@ -243,15 +253,38 @@ Piece.prototype.lock = function(){
             for(c = 0; c < COL; c++){
                 board[0][c] = VACANT;
             }
-            // score #wip
-            score += 100;
         }
     }
-    // update the board
+
+    // Soft/Hard drop scoring [wip]
+    score += 1;
+
+    // Scoring depending on cleared rows
+    if(clearedRows === 4){ //number of cleared rows
+        score += 800 * level; // *level
+        clears += 4
+    } else if(clearedRows === 3){
+        score += 500 * level; // *level
+        clears += 3
+    } else if(clearedRows === 2){
+        score += 300 * level; // *level
+        clears += 2
+    } else if(clearedRows === 1){
+        score += 100 * level; // *level
+        clears += 1
+    }
+
+    // Check if level should be incremented
+    levelCheck();
+
+    // Update the board
     drawBoard();
 
-    // update score
+    // Update score
     scoreElement.innerHTML = score;
+
+    // Update clears
+    clearsElement.innerHTML = clears;
 }
 
 // Collision function
@@ -305,7 +338,7 @@ function CONTROL(event){
         p.moveDown();
         dropStart = Date.now();
         start()
-    }else if(event.keyCode === 82){
+    }else if(event.keyCode === 82){ // Reset game
         reload();
     }
 }
@@ -321,13 +354,20 @@ function reload(){
     location.reload();
 }
 
-// Drop down every second
+// Level system
+function levelCheck(){
+    level = Math.floor((clears+10)/10);
+
+    levelElement.innerHTML = level;
+}
+
+// Drop down 
 let gameOver = false;
 let dropStart = Date.now();
 function drop(){
     let now = Date.now();
     let delta = now - dropStart;
-    if(delta > 1000){
+    if(delta > (1000/level)){ // drop speed depending on level
         p.moveDown();
         dropStart = Date.now();
     }
