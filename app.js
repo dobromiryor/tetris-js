@@ -9,7 +9,10 @@ const scoreElement = document.getElementById('score');
 const clearsElement = document.getElementById('clears');
 const levelElement = document.getElementById('level');
 const startMessage = document.getElementById('start-message');
+const tetrisMessage = document.getElementById('tetris-message');
 const endMessage = document.getElementById('end-message');
+const resetMessage = document.getElementById('reset-message');
+const highScoreElement = document.getElementById('high-score');
 
 // Tetrominoes
 const PIECE = [Z, S, T, O, L, I, J];
@@ -41,6 +44,9 @@ const FILLED = 'rgb(66, 73, 55)';
 // Score
 let score = 0;
 
+// High score
+let highScore = localStorage.getItem('highscore') == null ? 0 : localStorage.getItem('highscore');
+
 // Clears
 let clears = 0;
 
@@ -49,6 +55,9 @@ let level = 1;
 
 // Game state
 let running = false;
+
+// Soft/Hard drop y coordinate
+let dropY = 0;
 
 // Draw a square
 function drawSquare(x, y, color){
@@ -195,12 +204,14 @@ Piece.prototype.moveDown = function (){
         p = nextPiece;
         nextPiece = randomPiece();
     }
+    // score += (18 - dropY)*1;
 }
 
 // Hard Drop
 Piece.prototype.hardDrop = function (){
     for(r = 0; r < ROW; r++){
         if(!this.collision(0, 1, this.activeTetromino)){
+            dropY = this.y;
             this.unDraw();
             this.y++;
             this.draw(); 
@@ -210,6 +221,7 @@ Piece.prototype.hardDrop = function (){
             nextPiece = randomPiece();
         }
     }
+    // score += (18 - dropY)*2;
 }
 
 // Rotate the piece
@@ -246,9 +258,15 @@ Piece.prototype.lock = function(){
             }
             // game over
             if(this.y + r < 0){
-                endMessage.classList.remove('hidden');
+                endMessage.classList.remove('o-1');
                 // stop request animation frame
                 gameOver = true;
+
+                // Update high score
+                updateHighScore()
+
+                // Reload message
+                resetMessage.classList.remove('o-1');
                 break;
             }
             // lock piece
@@ -277,22 +295,27 @@ Piece.prototype.lock = function(){
         }
     }
 
-    // Soft/Hard drop scoring [wip]
-    score += 1;
+    // Scoring depending on Soft/Hard drop height
+    // score += 1;
 
     // Scoring depending on cleared rows
     if(clearedRows === 4){ //number of cleared rows
-        score += 800 * level; // *level
-        clears += 4
+        score += 800 * level;
+        clears += 4;
+        // Tetris! animation
+        tetrisMessage.classList.add('flash');
+        setTimeout(function(){
+            tetrisMessage.classList.remove('flash');
+        }, 2000);
     } else if(clearedRows === 3){
-        score += 500 * level; // *level
-        clears += 3
+        score += 500 * level;
+        clears += 3;
     } else if(clearedRows === 2){
-        score += 300 * level; // *level
-        clears += 2
+        score += 300 * level;
+        clears += 2;
     } else if(clearedRows === 1){
-        score += 100 * level; // *level
-        clears += 1
+        score += 100 * level;
+        clears += 1;
     }
 
     // Check if level should be incremented
@@ -326,7 +349,7 @@ Piece.prototype.collision = function(x,y,piece){
                 return true;
             }
 
-            // skip newY < 0; board[-1]
+            // skip newY < 0 -> board[-1]; crashes the game
             if(newY < 0){
                 continue;
             }
@@ -339,31 +362,36 @@ Piece.prototype.collision = function(x,y,piece){
     }
 }
 
-// Control the piece
+// Controls
 document.addEventListener('keydown', CONTROL);
 
 function CONTROL(event){
     if(event.keyCode === 32){ // Hard Drop
-        if(running){
+        if(running && !gameOver){
             p.hardDrop();
             dropStart = Date.now();
         }
     }else if(event.keyCode === 37){ // Left
-        p.moveLeft();
-        dropStart = Date.now();
-        start();
+        if(running && !gameOver){
+            p.moveLeft();
+            dropStart = Date.now();
+        }
     }else if(event.keyCode === 38){ // Rotate
-        p.rotate();
-        dropStart = Date.now();
-        start();
+        if(running && !gameOver){
+            p.rotate();
+            dropStart = Date.now();
+        }
     }else if(event.keyCode === 39){ // Right
-        p.moveRight();
-        dropStart = Date.now();
-        start();
+        if(running && !gameOver){
+            p.moveRight();
+            dropStart = Date.now();
+        }
     }else if(event.keyCode === 40){ // Down
-        p.moveDown();
-        dropStart = Date.now();
-        start()
+        if(!gameOver){
+            p.moveDown();
+            dropStart = Date.now();
+            start()
+        }
     }else if(event.keyCode === 82){ // Reset game
         reload();
     }
@@ -373,7 +401,7 @@ function CONTROL(event){
 function start(){
     drop();
     running = true;
-    startMessage.classList.add('hidden');
+    startMessage.classList.add('o-1');
 }
 
 // Reload game
@@ -387,6 +415,15 @@ function levelCheck(){
     // Update level
     levelElement.innerHTML = level;
 }
+
+// Update high score
+function updateHighScore(){
+    if(score > parseInt(highScore)){
+        localStorage.setItem('highscore', score);
+    }
+    highScoreElement.innerHTML = parseInt(highScore);
+}
+updateHighScore();
 
 // Drop down 
 let gameOver = false;
@@ -402,4 +439,3 @@ function drop(){
         requestAnimationFrame(drop);
     }
 }
-
