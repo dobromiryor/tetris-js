@@ -47,6 +47,9 @@ let clears = 0;
 // Level
 let level = 1;
 
+// Game state
+let running = false;
+
 // Draw a square
 function drawSquare(x, y, color){
     ctx.fillStyle = color;
@@ -195,17 +198,19 @@ Piece.prototype.moveDown = function (){
 }
 
 // Hard Drop
-// Piece.prototype.hardDrop = function (){
-//     if(!this.collision(0, 1, this.activeTetromino)){
-//         this.unDraw();
-//         console.log(this.y)
-//         this.draw(); 
-//     }else{
-//         this.lock();
-//         p = nextPiece;
-//         nextPiece = randomPiece();
-//     }
-// }
+Piece.prototype.hardDrop = function (){
+    for(r = 0; r < ROW; r++){
+        if(!this.collision(0, 1, this.activeTetromino)){
+            this.unDraw();
+            this.y++;
+            this.draw(); 
+        }else{
+            this.lock();
+            p = nextPiece;
+            nextPiece = randomPiece();
+        }
+    }
+}
 
 // Rotate the piece
 Piece.prototype.rotate = function (){
@@ -339,9 +344,10 @@ document.addEventListener('keydown', CONTROL);
 
 function CONTROL(event){
     if(event.keyCode === 32){ // Hard Drop
-        p.hardDrop();
-        dropStart = Date.now();
-        start();
+        if(running){
+            p.hardDrop();
+            dropStart = Date.now();
+        }
     }else if(event.keyCode === 37){ // Left
         p.moveLeft();
         dropStart = Date.now();
@@ -365,7 +371,8 @@ function CONTROL(event){
 
 // Start game
 function start(){
-    drop()
+    drop();
+    running = true;
     startMessage.classList.add('hidden');
 }
 
