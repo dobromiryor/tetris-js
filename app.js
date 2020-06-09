@@ -1,10 +1,13 @@
+// Tetris canvas
+const cvs = document.getElementById('tetris');
+const ctx = cvs.getContext('2d');
+// Next piece canvas
+const nextCvs = document.getElementById('next-piece');
+const nextCtx = nextCvs.getContext('2d');
+
 const scoreElement = document.getElementById('score');
 const clearsElement = document.getElementById('clears');
 const levelElement = document.getElementById('level');
-const cvs = document.getElementById('tetris');
-const ctx = cvs.getContext('2d');
-const nextCvs = document.getElementById('next-piece');
-const nextCtx = nextCvs.getContext('2d');
 const startMessage = document.getElementById('start-message');
 const endMessage = document.getElementById('end-message');
 
@@ -42,7 +45,7 @@ let score = 0;
 let clears = 0;
 
 // Level
-let level = 0;
+let level = 1;
 
 // Draw a square
 function drawSquare(x, y, color){
@@ -191,6 +194,19 @@ Piece.prototype.moveDown = function (){
     }
 }
 
+// Hard Drop
+// Piece.prototype.hardDrop = function (){
+//     if(!this.collision(0, 1, this.activeTetromino)){
+//         this.unDraw();
+//         console.log(this.y)
+//         this.draw(); 
+//     }else{
+//         this.lock();
+//         p = nextPiece;
+//         nextPiece = randomPiece();
+//     }
+// }
+
 // Rotate the piece
 Piece.prototype.rotate = function (){
     let nextPattern = this.tetromino[(this.tetrominoN + 1) % this.tetromino.length];
@@ -322,7 +338,11 @@ Piece.prototype.collision = function(x,y,piece){
 document.addEventListener('keydown', CONTROL);
 
 function CONTROL(event){
-    if(event.keyCode === 37){ // Left
+    if(event.keyCode === 32){ // Hard Drop
+        p.hardDrop();
+        dropStart = Date.now();
+        start();
+    }else if(event.keyCode === 37){ // Left
         p.moveLeft();
         dropStart = Date.now();
         start();
@@ -357,7 +377,7 @@ function reload(){
 // Level system
 function levelCheck(){
     level = Math.floor((clears+10)/10);
-
+    // Update level
     levelElement.innerHTML = level;
 }
 
