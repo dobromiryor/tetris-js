@@ -12,6 +12,7 @@ const startMessage = document.getElementById('start-message');
 const tetrisMessage = document.getElementById('tetris-message');
 const endMessage = document.getElementById('end-message');
 const resetMessage = document.getElementById('reset-message');
+const soundSymbol = document.getElementById('sound');
 const highScoreElement = document.getElementById('high-score');
 
 // Tetrominoes
@@ -45,7 +46,8 @@ const FILLED = 'rgb(66, 73, 55)';
 let score = 0;
 
 // High score
-let highScore = localStorage.getItem('highscore') == null ? 0 : localStorage.getItem('highscore');
+let highScore = localStorage.getItem('highscore') == null ? 
+    0 : localStorage.getItem('highscore');
 
 // Clears
 let clears = 0;
@@ -58,6 +60,9 @@ let running = false;
 
 // Soft/Hard drop y coordinate
 let dropY = 0;
+
+// Sound
+let muted = false;
 
 // Draw a square
 function drawSquare(x, y, color){
@@ -181,6 +186,12 @@ Piece.prototype.moveLeft = function (){
         this.unDraw();
         this.x--;
         this.draw();
+        // Audio
+        let audio = new Audio('audio/move.ogg');
+        if(!muted){
+            audio.play();
+        }
+        audio.volume = 0.3;
     }
 }
 
@@ -190,6 +201,12 @@ Piece.prototype.moveRight = function (){
         this.unDraw();
         this.x++;
         this.draw();
+        // Audio
+        let audio = new Audio('audio/move.ogg');
+        if(!muted){
+            audio.play();
+        }
+        audio.volume = 0.3;
     }
 }
 
@@ -198,9 +215,21 @@ Piece.prototype.moveDown = function (){
     if(!this.collision(0, 1, this.activeTetromino)){
         this.unDraw();
         this.y++;
-        this.draw(); 
+        this.draw();
+        // Audio
+        let audio = new Audio('audio/move.ogg');
+        if(!muted){
+            audio.play();
+        }
+        audio.volume = 0.3;
     }else{
         this.lock();
+        // Audio
+        let audio = new Audio('audio/softDrop.ogg');
+        if(!muted){
+            audio.play();
+        }
+        // Pick next piece
         p = nextPiece;
         nextPiece = randomPiece();
     }
@@ -217,6 +246,12 @@ Piece.prototype.hardDrop = function (){
             this.draw(); 
         }else{
             this.lock();
+            // Audio
+            let audio = new Audio('audio/hardDrop.ogg');
+            if(!muted){
+                audio.play();
+            }
+            // Pick next piece
             p = nextPiece;
             nextPiece = randomPiece();
         }
@@ -244,6 +279,12 @@ Piece.prototype.rotate = function (){
         this.tetrominoN = (this.tetrominoN + 1) % this.tetromino.length; // 3 -> 0
         this.activeTetromino = this.tetromino[this.tetrominoN];
         this.draw();
+        // Audio
+        let audio = new Audio('audio/rotate.ogg');
+        if(!muted){
+            audio.play();
+        }
+        audio.volume = 0.2;
     }
 }
 
@@ -259,8 +300,15 @@ Piece.prototype.lock = function(){
             // game over
             if(this.y + r < 0){
                 endMessage.classList.remove('o-1');
+
                 // stop request animation frame
                 gameOver = true;
+
+                // Audio
+                let audio = new Audio('audio/gameOver.ogg');
+                if(!muted){
+                    audio.play();
+                }
 
                 // Update high score
                 updateHighScore()
@@ -302,6 +350,11 @@ Piece.prototype.lock = function(){
     if(clearedRows === 4){ //number of cleared rows
         score += 800 * level;
         clears += 4;
+        // Audio
+        let audio = new Audio('audio/tetris.ogg');
+        if(!muted){
+            audio.play();
+        }
         // Tetris! animation
         tetrisMessage.classList.add('flash');
         setTimeout(function(){
@@ -390,10 +443,14 @@ function CONTROL(event){
         if(!gameOver){
             p.moveDown();
             dropStart = Date.now();
-            start()
+        }
+        if(!running){
+            start();
         }
     }else if(event.keyCode === 82){ // Reset game
         reload();
+    }else if(event.keyCode === 83){ // Mute game
+        mute();
     }
 }
 
@@ -401,6 +458,11 @@ function CONTROL(event){
 function start(){
     drop();
     running = true;
+    // Audio
+    let audio = new Audio('audio/start.ogg');
+    if(!muted){
+        audio.play();
+    }
     startMessage.classList.add('o-1');
 }
 
@@ -409,11 +471,31 @@ function reload(){
     location.reload();
 }
 
+// Mute game
+function mute(){
+    if(!muted){
+        muted = true;
+        soundSymbol.classList.add('o-1');
+    } else {
+        muted = false;
+        soundSymbol.classList.remove('o-1');
+    }
+}
+
 // Level system
 function levelCheck(){
-    level = Math.floor((clears+10)/10);
-    // Update level
-    levelElement.innerHTML = level;
+    let temp = Math.floor((clears+10)/10);
+    if(temp > level){
+        level = temp;
+        // Audio
+        let audio = new Audio('audio/levelUp.ogg');
+        if(!muted){
+            audio.play();
+        }
+        // Update level
+        levelElement.innerHTML = level;
+    }
+    
 }
 
 // Update high score
