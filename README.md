@@ -9,6 +9,7 @@
 - Soft Drop: Down Arrow
 - Hard Drop: Space
 - Reset Game: R
+- Sound: S
 
 ## Features
 - [x] The basic tetris movements
@@ -21,7 +22,7 @@
 - [x] Hard Drop
 - [x] High Score
 - [x] Better scoring (missing hard/soft drop bonus)
+- [x] Sounds
 
 ## Planned
-- [ ] Sounds
 - [ ] Better styling
