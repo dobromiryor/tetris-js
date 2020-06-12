@@ -13,6 +13,7 @@ const tetrisMessage = document.getElementById('tetris-message');
 const endMessage = document.getElementById('end-message');
 const resetMessage = document.getElementById('reset-message');
 const soundSymbol = document.getElementById('sound');
+const pauseSymbol = document.getElementById('pause');
 const highScoreElement = document.getElementById('high-score');
 
 // Tetrominoes
@@ -191,7 +192,7 @@ Piece.prototype.moveLeft = function (){
         if(!muted){
             audio.play();
         }
-        audio.volume = 0.3;
+        audio.volume = 0.9;
     }
 }
 
@@ -206,13 +207,14 @@ Piece.prototype.moveRight = function (){
         if(!muted){
             audio.play();
         }
-        audio.volume = 0.3;
+        audio.volume = 0.9;
     }
 }
 
 // Move down the piece
 Piece.prototype.moveDown = function (){
     if(!this.collision(0, 1, this.activeTetromino)){
+        locked = false
         this.unDraw();
         this.y++;
         this.draw();
@@ -221,8 +223,9 @@ Piece.prototype.moveDown = function (){
         if(!muted){
             audio.play();
         }
-        audio.volume = 0.3;
+        audio.volume = 0.9;
     }else{
+        locked = true
         this.lock();
         // Audio
         let audio = new Audio('audio/softDrop.ogg');
@@ -233,14 +236,12 @@ Piece.prototype.moveDown = function (){
         p = nextPiece;
         nextPiece = randomPiece();
     }
-    // score += (18 - dropY)*1;
 }
 
 // Hard Drop
 Piece.prototype.hardDrop = function (){
     for(r = 0; r < ROW; r++){
         if(!this.collision(0, 1, this.activeTetromino)){
-            dropY = this.y;
             this.unDraw();
             this.y++;
             this.draw(); 
@@ -256,7 +257,6 @@ Piece.prototype.hardDrop = function (){
             nextPiece = randomPiece();
         }
     }
-    // score += (18 - dropY)*2;
 }
 
 // Rotate the piece
@@ -284,7 +284,7 @@ Piece.prototype.rotate = function (){
         if(!muted){
             audio.play();
         }
-        audio.volume = 0.2;
+        audio.volume = 0.8;
     }
 }
 
@@ -317,7 +317,7 @@ Piece.prototype.lock = function(){
                 resetMessage.classList.remove('o-1');
                 break;
             }
-            // lock piece
+            // lock piece (square)
             board[this.y+r][this.x+c] = this.color;
         }
     }
@@ -344,7 +344,14 @@ Piece.prototype.lock = function(){
     }
 
     // Scoring depending on Soft/Hard drop height
-    // score += 1;
+    if(dropType === 'soft'){
+        if(locked){
+            score += (20 - dropY); // Soft
+        }
+    } else if (dropType === 'hard'){
+        score += (20 - dropY)*2; // Hard
+    }
+    
 
     // Scoring depending on cleared rows
     if(clearedRows === 4){ //number of cleared rows
@@ -416,36 +423,60 @@ Piece.prototype.collision = function(x,y,piece){
 }
 
 // Controls
-document.addEventListener('keydown', CONTROL);
+document.addEventListener('keydown', KEYDOWN);
+document.addEventListener('keyup', KEYUP);
+let dropType = '';
+let locked = true;
+let pressed = false;
+function KEYDOWN(event){
+    if(event.keyCode === 40){ // Down
+        if(!running){
+            start();
+        }
+        if(locked){
+            return;
+        }
+        if(running && !gameOver && !paused){
+            dropType = 'soft'
+            p.moveDown();
+            dropStart = Date.now();
+        }
+        if(pressed){
+            return;
+        }
+        dropY = p.y;
+        pressed = true;
+    }
+}
 
-function CONTROL(event){
+function KEYUP(event){
     if(event.keyCode === 32){ // Hard Drop
-        if(running && !gameOver){
+        if(running && !gameOver && !paused){
+            dropY = p.y;
+            dropType = 'hard';
             p.hardDrop();
             dropStart = Date.now();
         }
     }else if(event.keyCode === 37){ // Left
-        if(running && !gameOver){
+        if(running && !gameOver && !paused){
             p.moveLeft();
             dropStart = Date.now();
         }
     }else if(event.keyCode === 38){ // Rotate
-        if(running && !gameOver){
+        if(running && !gameOver && !paused){
             p.rotate();
             dropStart = Date.now();
         }
     }else if(event.keyCode === 39){ // Right
-        if(running && !gameOver){
+        if(running && !gameOver && !paused){
             p.moveRight();
             dropStart = Date.now();
         }
     }else if(event.keyCode === 40){ // Down
-        if(!gameOver){
-            p.moveDown();
-            dropStart = Date.now();
-        }
-        if(!running){
-            start();
+        pressed = false;
+    }else if(event.keyCode === 80){ // Pause game
+        if(running && !gameOver){
+            pause();
         }
     }else if(event.keyCode === 82){ // Reset game
         reload();
@@ -453,6 +484,7 @@ function CONTROL(event){
         mute();
     }
 }
+
 
 // Start game
 function start(){
@@ -469,6 +501,18 @@ function start(){
 // Reload game
 function reload(){
     location.reload();
+}
+
+// Pause game
+function pause(){
+    if(!paused){
+        paused = true;
+        pauseSymbol.classList.add('flash');
+    } else {
+        requestAnimationFrame(drop);
+        paused = false;
+        pauseSymbol.classList.remove('flash');
+    }
 }
 
 // Mute game
@@ -509,6 +553,7 @@ updateHighScore();
 
 // Drop down 
 let gameOver = false;
+let paused = false;
 let dropStart = Date.now();
 function drop(){
     let now = Date.now();
@@ -517,7 +562,9 @@ function drop(){
         p.moveDown();
         dropStart = Date.now();
     }
-    if (!gameOver){
+    if(paused){
+        return;
+    }else if(!gameOver && !paused){
         requestAnimationFrame(drop);
     }
 }
