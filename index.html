@@ -1,50 +1,119 @@
 <!DOCTYPE html>
 <html lang='en'>
 <head>
-    <title>TETRIS</title>
+    <title>SUPER BRICK GAME</title>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body class='col aic jcc'>
-    <div id='display' class='row'>
-        <canvas id='tetris' width='200' height='400'></canvas>
-        <div id='sidebar' class="col jcsb">
-            <div>
-                <div id='score-display' class='col jcc'>
-                    <div id='score' class='digit'>0</div>
-                    <div class='label'>Score</div>
-                </div>
-                <div class='mt-8'>
-                    <canvas id='next-piece' class='' width='80' height='60'></canvas>
-                    <div class='label'>Next</div>
-                </div>
-                <div class="row mt-8 jcsb">
-                    <div id='level-display' class='col jcc aic'>
-                        <div id='level' class='digit'>1</div>
-                        <div class='label'>Level</div>
+    <div id='console' class='col'>
+        <div id='display' class='row'>
+            <canvas id='tetris' width='200' height='400'></canvas>
+            <div id='sidebar' class="col jcsb">
+                <div>
+                    <div id='score-display' class='col jcfe'>
+                        <span class='digit o-1 pr'>88888888888</span>
+                        <div id='score' class='digit'>0</div>
+                        <div class='label'>Score</div>
                     </div>
-                    <div id='clears-display' class='col jcc aic'>
-                        <div id='clears' class='digit'>0</div>
-                        <div class='label'>Clears</div>
+                    <div class='mt-8'>
+                        <canvas id='next-piece' class='' width='80' height='60'></canvas>
+                        <div class='label'>Next</div>
+                    </div>
+                    <div id='level-clears' class="row mt-8 jcsb">
+                        <div id='level-display' class='col jcc aic'>
+                            <span class='digit o-1 pr'>888</span>
+                            <div id='level' class='digit'>1</div>
+                            <div class='label'>Level</div>
+                        </div>
+                        <div id='clears-display' class='col jcc aic'>
+                            <span class='digit o-1 pr'>888</span>
+                            <div id='clears' class='digit'>0</div>
+                            <div class='label'>Clears</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div id='start-message' class='mt-8'>Press ↓ to start</div>
+                    <div id='tetris-message' class='mt-8'>Tetris!</div>
+                    <div id='end-message' class='mt-8 o-1'>Game Over</div>
+                    <div id='reset-message' class='mt-8 o-1'>Press R to reset</div>
+                </div>
+                <div class='row aic jcsa mt-8'>
+                    <div id='sound' class=''>♫</div>
+                    <div id='pause' class='o-1'>❚❚</div>
+                </div>
+                <div id='high-score-display' class='col jcfe mt-8'>
+                    <span class='digit o-1 pr'>88888888888</span>
+                    <div id='high-score' class='digit'>0</div>
+                    <div class='label'>High Score</div>
+                </div>
+            </div>
+        </div>
+        <div class=''>
+            <div id=top-gradient></div>
+            <div id='bottom-gradient'></div>
+        </div>
+        <div id='lower-half' class='col'>
+            <div id='buttons'>
+                <div id='settings-buttons' class='row jcc aic jcse mt-8'>
+                    <div class='col jcc aic'>
+                        <button id="sound-button"></button>
+                        <div class='bold button-label'>Sound</div>
+                    </div>
+                    <div class='col jcc aic'>
+                        <button id="start-button"></button>
+                        <div class='bold button-label'>Start/Pause</div>
+                    </div>
+                    <div class='col jcc aic'>
+                        <button id="reset-button"></button>
+                        <div class='bold button-label'>Reset</div>
+                    </div>
+                </div>
+                <div class='row jcse mt-32'>
+                    <div id='direction-buttons' class='col jcc aic'>
+                        <div class="col jcc aic">
+                            <button id="rotate-button"></button>
+                            <div class='bold button-label'>Rotate</div>
+                        </div>
+                        <div class='row'>
+                            <div class='col jcc aic mr-32'>
+                                <button id="left-button"></button>
+                                <div class='bold button-label'>Left</div>
+                            </div>
+                            <div class='col jcc aic ml-32'>
+                                <button id="right-button"></button>
+                                <div class='bold button-label'>Right</div>
+                            </div>
+                        </div>
+                        <div class="col jcc aic">
+                            <button id="soft-button"></button>
+                            <div class='bold button-label'>Soft Drop</div>
+                        </div>
+                    </div>
+                    <div class='col jcc aic'>
+                        <button id="hard-button"></button>
+                        <div class='bold button-label'>Hard Drop</div>
                     </div>
                 </div>
             </div>
-            <div>
-                <div id='start-message' class='mt-8'>Press ↓ to start</div>
-                <div id='tetris-message' class='mt-8'>Tetris!</div>
-                <div id='end-message' class='mt-8 o-1'>Game Over</div>
-                <div id='reset-message' class='mt-8 o-1'>Press R to reset</div>
-            </div>
-            <div class='row aic jcsa mt-8'>
-                <div id='sound' class=''>♫</div>
-                <div id='pause' class='o-1 fs-8'>▌▐</div>
-            </div>
-            <div id='high-score-display' class='col jcc mt-8'>
-                <div id='high-score' class='digit'>0</div>
-                <div class='label'>High Score</div>
+            <div id='graphics-container' class='row jcc aic'>
+                <div id='bottom-graphics' class='col'>
+                    <div class='col bold'>
+                        <div class='asfs'>Super</div>
+                        <div class='asc'>Brick</div>
+                        <div class='asfe'>Game</div>
+                    </div>
+                    <div class='col'>
+                        <div class='asc'>999 in 1</div>
+                        <div id='not-really' class='asc'>(not really)</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div id='keys'>
+    
+    
+    <div id='keys' class='hidden'>
         <h3>Controls</h4>
         <p>Left: Left Arrow</p>
         <p>Right: Right Arrow</p>
@@ -53,6 +122,7 @@
         <p>Hard Drop: Space</p>
         <p>Reset Game: R</p>
         <p>Sound: S</p>
+        <p>Pause: P</p>
     </div>
     
     <!-- JS files -->
