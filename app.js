@@ -5,6 +5,7 @@ const ctx = cvs.getContext('2d');
 const nextCvs = document.getElementById('next-piece');
 const nextCtx = nextCvs.getContext('2d');
 
+// Display
 const scoreElement = document.getElementById('score');
 const clearsElement = document.getElementById('clears');
 const levelElement = document.getElementById('level');
@@ -15,6 +16,16 @@ const resetMessage = document.getElementById('reset-message');
 const soundSymbol = document.getElementById('sound');
 const pauseSymbol = document.getElementById('pause');
 const highScoreElement = document.getElementById('high-score');
+
+//Buttons
+const soundButton = document.getElementById('sound-button');
+const startButton = document.getElementById('start-button');
+const resetButton = document.getElementById('reset-button');
+const leftButton = document.getElementById('left-button');
+const rotateButton = document.getElementById('rotate-button');
+const rightButton = document.getElementById('right-button');
+const softButton = document.getElementById('soft-button');
+const hardButton = document.getElementById('hard-button');
 
 // Tetrominoes
 const PIECE = [Z, S, T, O, L, I, J];
@@ -226,7 +237,9 @@ Piece.prototype.moveDown = function (){
         audio.volume = 0.9;
     }else{
         locked = true
+        clearInterval(interval);
         this.lock();
+        
         // Audio
         let audio = new Audio('audio/softDrop.ogg');
         if(!muted){
@@ -303,6 +316,7 @@ Piece.prototype.lock = function(){
 
                 // stop request animation frame
                 gameOver = true;
+                clearInterval(interval);
 
                 // Audio
                 let audio = new Audio('audio/gameOver.ogg');
@@ -329,14 +343,23 @@ Piece.prototype.lock = function(){
             isRowFull = isRowFull && (board[r][c]  != VACANT);
         }
         if(isRowFull){ // if roll is full, then clear it
+            // Add one to display counter
             clearedRows += 1;
-            // remove one from bottom
+
+            // Audio
+            let audio = new Audio('audio/clearRow.ogg');
+            if(!muted){
+                audio.play();
+            }
+
+            // Remove one from bottom
             for(y = r; y > 1; y--){
                 for(c = 0; c < COL; c++){
                     board[y][c] = board[y-1][c];
                 }
             }
-            // add one on top
+
+            // Add one on top
             for(c = 0; c < COL; c++){
                 board[0][c] = VACANT;
             }
@@ -423,11 +446,14 @@ Piece.prototype.collision = function(x,y,piece){
 }
 
 // Controls
+
+// Keyboard
 document.addEventListener('keydown', KEYDOWN);
 document.addEventListener('keyup', KEYUP);
 let dropType = '';
 let locked = true;
 let pressed = false;
+
 function KEYDOWN(event){
     if(event.keyCode === 40){ // Down
         if(!running){
@@ -479,12 +505,87 @@ function KEYUP(event){
             pause();
         }
     }else if(event.keyCode === 82){ // Reset game
-        reload();
+        reset();
     }else if(event.keyCode === 83){ // Mute game
         mute();
     }
 }
 
+// Buttons
+soundButton.addEventListener('click', () => {
+    mute()
+})
+startButton.addEventListener('click', () => {
+    if(!running){
+        start();
+    } else if (running && !gameOver){
+        pause();
+    }
+})
+resetButton.addEventListener('click', () => {
+    reset();
+})
+leftButton.addEventListener('click', () => {
+    if(running && !gameOver && !paused){
+        p.moveLeft();
+        dropStart = Date.now();
+    }
+})
+rotateButton.addEventListener('click', () => {
+    if(running && !gameOver && !paused){
+        p.rotate();
+        dropStart = Date.now();
+    }
+})
+rightButton.addEventListener('click', () => {
+    if(running && !gameOver && !paused){
+        p.moveRight();
+        dropStart = Date.now();
+    }
+})
+let interval;
+softButton.addEventListener('mousedown', () => {
+    if(running && !gameOver && !paused){
+        interval = setInterval(softInterval, 30);
+    }
+    dropY = p.y;
+    pressed = true;
+})
+softButton.addEventListener('mouseup', () => {
+    if(running && !gameOver && !paused){
+        clearInterval(interval);
+    }
+    pressed = false;
+})
+function softInterval() {
+    dropType = 'soft'
+    p.moveDown();
+    dropStart = Date.now();
+}
+hardButton.addEventListener('click', () => {
+    if(running && !gameOver && !paused){
+        dropY = p.y;
+        dropType = 'hard';
+        p.hardDrop();
+        dropStart = Date.now();
+    }
+})
+
+// Touch
+softButton.addEventListener('touchstart', () => {
+    if(running && !gameOver && !paused){
+        interval = setInterval(softInterval, 60);
+    }
+    dropY = p.y;
+    pressed = true;
+})
+softButton.addEventListener('touchend', () => {
+    if(running && !gameOver && !paused){
+        console.log('touch end')
+        clearInterval(interval);
+    }
+    pressed = false;
+})
 
 // Start game
 function start(){
@@ -498,8 +599,8 @@ function start(){
     startMessage.classList.add('o-1');
 }
 
-// Reload game
-function reload(){
+// Reset game
+function reset(){
     location.reload();
 }
 
