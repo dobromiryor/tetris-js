@@ -27,6 +27,12 @@ const rightButton = document.getElementById('right-button');
 const softButton = document.getElementById('soft-button');
 const hardButton = document.getElementById('hard-button');
 
+// Fullscreen Toggle
+const fullscreenToggle = document.getElementById('fullscreen-toggle');
+
+// Keys hint
+const keysHint = document.getElementById('keys');
+
 // Tetrominoes
 const PIECE = [Z, S, T, O, L, I, J];
 
@@ -597,6 +603,8 @@ function start(){
         audio.play();
     }
     startMessage.classList.add('o-1');
+    // hide keys hint
+    keysHint.classList.add('hidden');
 }
 
 // Reset game
@@ -668,4 +676,44 @@ function drop(){
     }else if(!gameOver && !paused){
         requestAnimationFrame(drop);
     }
+}
+
+// Resize console
+function resizeConsole() {
+    let consoleElement = document.getElementById('console');
+    let wrapperElement = document.getElementById('wrapper');
+    let consoleMargin = parseInt(getComputedStyle(consoleElement).margin);
+    let consoleWidth = consoleElement.clientWidth + (consoleMargin*2);
+    let consoleHeight = consoleElement.clientHeight + (consoleMargin*2);
+
+    let height = window.innerHeight;
+    let width = window.innerWidth;
+    let scale;
+
+    // if(width >= consoleWidth && height >= consoleHeight){
+    //     return;
+    // }
+
+    scale = Math.min(height/consoleHeight,width/consoleWidth)
+
+    consoleElement.style.transform = 'scale(' + scale + ')';
+    wrapperElement.style.height = consoleHeight * scale;
+    wrapperElement.style.width = consoleWidth * scale;
+}
+window.onresize = function(event) {
+    resizeConsole();
+}
+window.onload = function() { 
+    resizeConsole();
+}
+fullscreenToggle.onclick = function(){
+    if (document.fullscreenElement) { 
+        fullscreenToggle.innerHTML = '🗖';
+        document.exitFullscreen()
+          .then(() => console.log("Document Exited form Full screen mode"))
+          .catch((err) => console.error(err))
+    } else { 
+    document.documentElement.requestFullscreen();
+    fullscreenToggle.innerHTML = '✖';
+    } 
 }
