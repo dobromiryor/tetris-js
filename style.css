@@ -17,10 +17,13 @@
 
 body, html{
     font-family: 'Roboto Mono', monospace;
+    margin: 0;
     background-color: #333;
+    color: #ccc;
     overscroll-behavior: none;
     touch-action: manipulation;
     user-select: none;
+    overflow: hidden;
 }
 
 
@@ -108,16 +111,17 @@ body, html{
     display: none;
 }
 
-
+/* WRAPPER */
+#wrapper{
+    height: 100vh;
+}
 
 /* CONSOLE */
 
 #console{
-    /* height: 100%; */
-    width: auto;
-    margin: 16px;
+    margin: 32px;
     background-color: var(--gray);
-    border-radius: 16px;
+    color: #333;
     box-shadow: 
     0px 0px 8px 8px var(--gray),
     -8px 8px 0px 8px var(--gray-shadow),
@@ -125,6 +129,8 @@ body, html{
     -7px -8px 0px 8px var(--gray-light),
     7px -8px 0px 8px var(--gray-light),
     0 16px 32px 0px rgba(0, 0, 0, 0.33);
+    border-radius: 16px;
+    transition: 1s;
 }
 
 
@@ -140,6 +146,7 @@ body, html{
     border: 16px solid var(--gray-mid-light);
     border-top: 16px solid var(--gray-shadow);
     border-bottom: 16px solid var(--gray-light);
+    box-shadow: inset 0px 0px 0px 1px var(--display-draw);
     background: var(--display);
     color: var(--display-draw);
 }
@@ -171,6 +178,7 @@ body, html{
 .label{
     text-transform: uppercase;
     font-size: 12px;
+    color: var(--display-draw)
 }
 
 #tetris-message{
@@ -229,7 +237,7 @@ body, html{
 /* BUTTONS */
 
 #lower-half{
-    height: 422px;
+    height: 452px;
 }
 
 button{
@@ -272,6 +280,7 @@ button:active{
 .button-label{
     text-transform: uppercase;
     font-size: 0.8em;
+    color: #333;
 }
 
 #bottom-graphics{
@@ -284,10 +293,27 @@ button:active{
 
 #not-really{
     text-transform: lowercase;
-    font-size: 8px;
+    font-size: 6px;
 }
 
 /* OTHER */
+#fullscreen-toggle{
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    font-size: 1rem;
+    background-color: var(--gray);
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+}
+
 #keys{
-    color: #ccc;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: var(--gray);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
