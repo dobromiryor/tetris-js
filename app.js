@@ -492,17 +492,14 @@ function KEYUP(event){
     }else if(event.keyCode === 37){ // Left
         if(running && !gameOver && !paused){
             p.moveLeft();
-            dropStart = Date.now();
         }
     }else if(event.keyCode === 38){ // Rotate
         if(running && !gameOver && !paused){
             p.rotate();
-            dropStart = Date.now();
         }
     }else if(event.keyCode === 39){ // Right
         if(running && !gameOver && !paused){
             p.moveRight();
-            dropStart = Date.now();
         }
     }else if(event.keyCode === 40){ // Down
         pressed = false;
@@ -534,19 +531,16 @@ resetButton.addEventListener('click', () => {
 leftButton.addEventListener('click', () => {
     if(running && !gameOver && !paused){
         p.moveLeft();
-        dropStart = Date.now();
     }
 })
 rotateButton.addEventListener('click', () => {
     if(running && !gameOver && !paused){
         p.rotate();
-        dropStart = Date.now();
     }
 })
 rightButton.addEventListener('click', () => {
     if(running && !gameOver && !paused){
         p.moveRight();
-        dropStart = Date.now();
     }
 })
 let interval;
@@ -647,9 +641,19 @@ function levelCheck(){
         }
         // Update level
         levelElement.innerHTML = level;
+        //Increase drop speed
+        if(level <= 9){
+            dropSpeed -= 50;
+        } else if(level <= 27){
+            dropSpeed -= 25;
+        } else if(level <= 29){
+            dropSpeed -= 20;
+        } else if(level <= 30 && dropSpeed > 100){
+            dropSpeed -= 10;
+        }
     }
-    
 }
+
 
 // Update high score
 function updateHighScore(){
@@ -663,11 +667,12 @@ updateHighScore();
 // Drop down 
 let gameOver = false;
 let paused = false;
+let dropSpeed = 1000;
 let dropStart = Date.now();
 function drop(){
     let now = Date.now();
     let delta = now - dropStart;
-    if(delta > (1000/level)){ // drop speed depending on level
+    if(delta > dropSpeed){ // drop speed depending on level
         p.moveDown();
         dropStart = Date.now();
     }
@@ -690,10 +695,6 @@ function resizeConsole() {
     let width = window.innerWidth;
     let scale;
 
-    // if(width >= consoleWidth && height >= consoleHeight){
-    //     return;
-    // }
-
     scale = Math.min(height/consoleHeight,width/consoleWidth)
 
     consoleElement.style.transform = 'scale(' + scale + ')';
@@ -706,14 +707,16 @@ window.onresize = function(event) {
 window.onload = function() { 
     resizeConsole();
 }
+
+// Fullscreen
 fullscreenToggle.onclick = function(){
     if (document.fullscreenElement) { 
-        fullscreenToggle.innerHTML = '🗖';
+        fullscreenToggle.innerHTML = '<span class="mb-5">🗖</span>';
         document.exitFullscreen()
           .then(() => console.log("Document Exited form Full screen mode"))
           .catch((err) => console.error(err))
     } else { 
     document.documentElement.requestFullscreen();
-    fullscreenToggle.innerHTML = '✖';
+    fullscreenToggle.innerHTML = '<span>✖</span>';
     } 
 }
