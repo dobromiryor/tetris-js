@@ -34,10 +34,11 @@
                         </div>
                     </div>
                     <div>
-                        <div id='start-message' class='mt-8'>Press ↓ to start</div>
-                        <div id='tetris-message' class='mt-8'>Tetris!</div>
-                        <div id='end-message' class='mt-8 o-1'>Game Over</div>
-                        <div id='reset-message' class='mt-8 o-1'>Press R to reset</div>
+                        <div id='start-message' class='mt-8 message'>Press ↓ to start</div>
+                        <div id='tetris-message' class='mt-8 message'>Tetris!</div>
+                        <div id='end-message' class='mt-8 message o-1'>Game Over</div>
+                        <div id='reset-message' class='mt-8 message o-1'>Press R to reset</div>
+                        <div id='rotation' class='mt-8 message'>Rotation &#8635;</div>
                     </div>
                     <div class='row aic jcsa mt-8'>
                         <div id='sound' class=''>♫</div>
@@ -115,19 +116,24 @@
     </div>
     
     <div id='fullscreen-toggle' class="row jcc aic">
-        <span>🗖</span>
+        <span class='mb-5'>🗖</span>
+    </div>   
+
+    <div id='keys-hint-button' class="row jcc aic">
+        <span class='mb-5'>&#x2328;</span>
     </div>
 
     <div id='keys' class='hidden'>
-        <h3>Controls</h4>
-        <p>Left: Left Arrow</p>
-        <p>Right: Right Arrow</p>
-        <p>Rotate: Up Arrow</p>
-        <p>Soft Drop: Down Arrow</p>
-        <p>Hard Drop: Space</p>
-        <p>Reset Game: R</p>
-        <p>Sound: S</p>
-        <p>Pause: P</p>
+        <div id='title'>Controls</div>
+        <div>Left: Left Arrow</div>
+        <div>Right: Right Arrow</div>
+        <div>Rotate: Up Arrow</div>
+        <div>Soft Drop: Down Arrow</div>
+        <div>Hard Drop: Space</div>
+        <div>Reset Game: R</div>
+        <div>Sound: S</div>
+        <div>Pause: P</div>
+        <div id='close'>&#x2715;</div>
     </div>
     
     <!-- JS files -->

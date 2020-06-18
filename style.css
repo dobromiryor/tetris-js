@@ -19,7 +19,6 @@ body, html{
     font-family: 'Roboto Mono', monospace;
     margin: 0;
     background-color: #333;
-    color: #ccc;
     overscroll-behavior: none;
     touch-action: manipulation;
     user-select: none;
@@ -82,8 +81,8 @@ body, html{
     margin-top: 32px;
 }
 
-.mb-5{
-    margin-bottom: 5px;
+.mb-2{
+    margin-bottom: 2px !important;
 }
 
 .ml-32{
@@ -108,7 +107,7 @@ body, html{
 }
 
 .hidden{
-    display: none;
+    opacity: 0;
 }
 
 /* WRAPPER */
@@ -305,21 +304,58 @@ button:active{
     position: fixed;
     bottom: 16px;
     right: 16px;
-    font-size: 1em;
-    background-color: var(--gray);
     width: 2em;
     height: 2em;
+    font-size: 1em;
+    background-color: var(--gray);
     border-radius: 50%;
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.33);
+}
+
+#fullscreen-toggle span{
+    margin-bottom: 5px;
+}
+
+#keys-hint-button{
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    width: 2em;
+    height: 2em;
+    font-size: 1em;
+    background-color: var(--gray);
+    border-radius: 50%;
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.33);
+    transition: 0.25s;
 }
 
 #keys{
-    padding: 8px;
+    padding: 16px;
     border-radius: 8px;
     background-color: var(--gray);
+    color: #333;
     position: fixed;
-    top: 50%;
+    top: 90%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -90%);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.33),
+                0px 4px 16px 4px rgba(0, 0, 0, 0.33);
+    transition: 0.5s;
+}
+
+#keys #title{
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+#keys #close{
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    top: 16px;
+    right: 16px;
+    text-align: center;
 }
 
 @media (pointer:coarse) {
@@ -331,5 +367,14 @@ button:active{
     }
     .message{
         font-size: 12px;
+    }
+    #fullscreen-toggle span{
+        margin: 2px;
+    }
+    #keys{
+        display: none;
+    }
+    #keys-hint-button{
+        display: none;
     }
 }

@@ -30,6 +30,12 @@ const hardButton = document.getElementById('hard-button');
 // Fullscreen Toggle
 const fullscreenToggle = document.getElementById('fullscreen-toggle');
 
+// Key hint open button
+const keysHintButton = document.getElementById('keys-hint-button');
+
+// Key hint close button
+const keysHintClose = document.getElementById('close');
+
 // Keys hint
 const keysHint = document.getElementById('keys');
 
@@ -597,8 +603,6 @@ function start(){
         audio.play();
     }
     startMessage.classList.add('o-1');
-    // hide keys hint
-    keysHint.classList.add('hidden');
 }
 
 // Reset game
@@ -725,6 +729,16 @@ fullscreenToggle.onclick = function(){
           .catch((err) => console.error(err))
     } else { 
     document.documentElement.requestFullscreen();
-    fullscreenToggle.innerHTML = '<span class="mb-0">✖</span>';
+    fullscreenToggle.innerHTML = '<span class="mb-2">&#x2715;</span>';
     } 
 }
+
+// Keyhint open/close
+keysHintButton.addEventListener('click', () => {
+    keysHint.classList.remove('hidden');
+    keysHintButton.classList.add('hidden');
+})
+keysHintClose.addEventListener('click', () => {
+    keysHint.classList.add('hidden');
+    keysHintButton.classList.remove('hidden');
+})
