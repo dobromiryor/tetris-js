@@ -215,7 +215,7 @@ Piece.prototype.moveLeft = function (){
         if(!+localStorage.getItem('muted')){
             audio.play();
         }
-        audio.volume = 0.9;
+        audio.volume = 0.5;
     }
 }
 
@@ -230,7 +230,7 @@ Piece.prototype.moveRight = function (){
         if(!+localStorage.getItem('muted')){
             audio.play();
         }
-        audio.volume = 0.9;
+        audio.volume = 0.5;
     }
 }
 
@@ -246,7 +246,7 @@ Piece.prototype.moveDown = function (){
         if(!+localStorage.getItem('muted')){
             audio.play();
         }
-        audio.volume = 0.9;
+        audio.volume = 0.5;
     }else{
         locked = true
         clearInterval(interval);
@@ -257,6 +257,7 @@ Piece.prototype.moveDown = function (){
         if(!+localStorage.getItem('muted')){
             audio.play();
         }
+        audio.volume = 0.9;
         // Pick next piece
         p = nextPiece;
         nextPiece = randomPiece();
@@ -277,6 +278,7 @@ Piece.prototype.hardDrop = function (){
             if(!+localStorage.getItem('muted')){
                 audio.play();
             }
+            audio.volume = 0.9;
             // Pick next piece
             p = nextPiece;
             nextPiece = randomPiece();
@@ -305,11 +307,11 @@ Piece.prototype.rotate = function (){
         this.activeTetromino = this.tetromino[this.tetrominoN];
         this.draw();
         // Audio
-        let audio = new Audio('audio/rotate.ogg');
+        let audio = new Audio('audio/move.ogg');
         if(!+localStorage.getItem('muted')){
             audio.play();
         }
-        audio.volume = 0.8;
+        audio.volume = 1;
     }
 }
 
@@ -335,6 +337,7 @@ Piece.prototype.lock = function(){
                 if(!+localStorage.getItem('muted')){
                     audio.play();
                 }
+                audio.volume = 0.9;
 
                 // Update high score
                 updateHighScore()
@@ -357,12 +360,6 @@ Piece.prototype.lock = function(){
         if(isRowFull){ // if roll is full, then clear it
             // Add one to display counter
             clearedRows += 1;
-
-            // Audio
-            let audio = new Audio('audio/clearRow.ogg');
-            if(!+localStorage.getItem('muted')){
-                audio.play();
-            }
 
             // Remove one from bottom
             for(y = r; y > 1; y--){
@@ -397,6 +394,7 @@ Piece.prototype.lock = function(){
         if(!+localStorage.getItem('muted')){
             audio.play();
         }
+        audio.volume = 0.9;
         // Tetris! animation
         tetrisMessage.classList.add('flash');
         setTimeout(function(){
@@ -405,12 +403,30 @@ Piece.prototype.lock = function(){
     } else if(clearedRows === 3){
         score += 500 * level;
         clears += 3;
+        // Audio
+        let audio = new Audio('audio/clearRow.ogg');
+        if(!+localStorage.getItem('muted')){
+            audio.play();
+        }
+        audio.volume = 0.9;
     } else if(clearedRows === 2){
         score += 300 * level;
         clears += 2;
+        // Audio
+        let audio = new Audio('audio/clearRow.ogg');
+        if(!+localStorage.getItem('muted')){
+            audio.play();
+        }
+        audio.volume = 0.9;
     } else if(clearedRows === 1){
         score += 100 * level;
         clears += 1;
+        // Audio
+        let audio = new Audio('audio/clearRow.ogg');
+        if(!+localStorage.getItem('muted')){
+            audio.play();
+        }
+        audio.volume = 0.9;
     }
 
     // Check if level should be incremented
@@ -602,6 +618,7 @@ function start(){
     if(!+localStorage.getItem('muted')){
         audio.play();
     }
+    audio.volume = 0.9;
     startMessage.classList.add('o-1');
 }
 
@@ -651,6 +668,7 @@ function levelCheck(){
         if(!+localStorage.getItem('muted')){
             audio.play();
         }
+        audio.volume = 0.9;
         // Update level
         levelElement.innerHTML = level;
         //Increase drop speed
