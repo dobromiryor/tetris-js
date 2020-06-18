@@ -80,7 +80,7 @@ let running = false;
 let dropY = 0;
 
 // Sound
-let muted = false;
+let muted = 0;
 
 // Draw a square
 function drawSquare(x, y, color){
@@ -206,7 +206,7 @@ Piece.prototype.moveLeft = function (){
         this.draw();
         // Audio
         let audio = new Audio('audio/move.ogg');
-        if(!muted){
+        if(!+localStorage.getItem('muted')){
             audio.play();
         }
         audio.volume = 0.9;
@@ -221,7 +221,7 @@ Piece.prototype.moveRight = function (){
         this.draw();
         // Audio
         let audio = new Audio('audio/move.ogg');
-        if(!muted){
+        if(!+localStorage.getItem('muted')){
             audio.play();
         }
         audio.volume = 0.9;
@@ -237,7 +237,7 @@ Piece.prototype.moveDown = function (){
         this.draw();
         // Audio
         let audio = new Audio('audio/move.ogg');
-        if(!muted){
+        if(!+localStorage.getItem('muted')){
             audio.play();
         }
         audio.volume = 0.9;
@@ -248,7 +248,7 @@ Piece.prototype.moveDown = function (){
         
         // Audio
         let audio = new Audio('audio/softDrop.ogg');
-        if(!muted){
+        if(!+localStorage.getItem('muted')){
             audio.play();
         }
         // Pick next piece
@@ -268,7 +268,7 @@ Piece.prototype.hardDrop = function (){
             this.lock();
             // Audio
             let audio = new Audio('audio/hardDrop.ogg');
-            if(!muted){
+            if(!+localStorage.getItem('muted')){
                 audio.play();
             }
             // Pick next piece
@@ -300,7 +300,7 @@ Piece.prototype.rotate = function (){
         this.draw();
         // Audio
         let audio = new Audio('audio/rotate.ogg');
-        if(!muted){
+        if(!+localStorage.getItem('muted')){
             audio.play();
         }
         audio.volume = 0.8;
@@ -326,7 +326,7 @@ Piece.prototype.lock = function(){
 
                 // Audio
                 let audio = new Audio('audio/gameOver.ogg');
-                if(!muted){
+                if(!+localStorage.getItem('muted')){
                     audio.play();
                 }
 
@@ -354,7 +354,7 @@ Piece.prototype.lock = function(){
 
             // Audio
             let audio = new Audio('audio/clearRow.ogg');
-            if(!muted){
+            if(!+localStorage.getItem('muted')){
                 audio.play();
             }
 
@@ -388,7 +388,7 @@ Piece.prototype.lock = function(){
         clears += 4;
         // Audio
         let audio = new Audio('audio/tetris.ogg');
-        if(!muted){
+        if(!+localStorage.getItem('muted')){
             audio.play();
         }
         // Tetris! animation
@@ -593,7 +593,7 @@ function start(){
     running = true;
     // Audio
     let audio = new Audio('audio/start.ogg');
-    if(!muted){
+    if(!+localStorage.getItem('muted')){
         audio.play();
     }
     startMessage.classList.add('o-1');
@@ -620,14 +620,22 @@ function pause(){
 
 // Mute game
 function mute(){
+    muted = +localStorage.getItem('muted'); 
     if(!muted){
-        muted = true;
+        localStorage.setItem('muted', 1);
         soundSymbol.classList.add('o-1');
     } else {
-        muted = false;
+        localStorage.setItem('muted', 0);
         soundSymbol.classList.remove('o-1');
     }
 }
+document.addEventListener('DOMContentLoaded', function(event){
+    if(+localStorage.getItem('muted')){    
+        soundSymbol.classList.add('o-1');
+    } else {
+        soundSymbol.classList.remove('o-1');
+    }
+})
 
 // Level system
 function levelCheck(){
@@ -636,7 +644,7 @@ function levelCheck(){
         level = temp;
         // Audio
         let audio = new Audio('audio/levelUp.ogg');
-        if(!muted){
+        if(!+localStorage.getItem('muted')){
             audio.play();
         }
         // Update level
@@ -711,12 +719,12 @@ window.onload = function() {
 // Fullscreen
 fullscreenToggle.onclick = function(){
     if (document.fullscreenElement) { 
-        fullscreenToggle.innerHTML = '<span class="mb-5">🗖</span>';
+        fullscreenToggle.innerHTML = '<span class=>🗖</span>';
         document.exitFullscreen()
           .then(() => console.log("Document Exited form Full screen mode"))
           .catch((err) => console.error(err))
     } else { 
     document.documentElement.requestFullscreen();
-    fullscreenToggle.innerHTML = '<span>✖</span>';
+    fullscreenToggle.innerHTML = '<span class="mb-0">✖</span>';
     } 
 }
