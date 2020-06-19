@@ -1,5 +1,15 @@
-@font-face {font-family: "Digital-7"; src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot"); src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff") format("woff"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.svg#Digital-7") format("svg"); }
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;700&display=swap");
+
+@font-face {
+    font-family: "Digital-7"; 
+    src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot"); 
+    src: 
+    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot?#iefix") format("embedded-opentype"), 
+    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff2") format("woff2"), 
+    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff") format("woff"), 
+    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.ttf") format("truetype"), 
+    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.svg#Digital-7") format("svg"); 
+}
 
 :root{
     --gray-light: rgb(164, 165, 173);
@@ -99,7 +109,10 @@ body, html{
 
 .pr{
     position: relative;
-    top: 16px;
+}
+
+.pa{
+    position: absolute;
 }
 
 .o-1{
@@ -139,9 +152,9 @@ body, html{
 #display{
     display: flex;
     width: 300px;
+    height: 420px;
     margin: 32px 48px;
     padding: 10px;
-    /* border: 1px solid black; */
     border: 16px solid var(--gray-mid-light);
     border-top: 16px solid var(--gray-shadow);
     border-bottom: 16px solid var(--gray-light);
@@ -154,8 +167,8 @@ body, html{
     box-shadow: 0 0 0px 1px var(--display-draw);
 }
 
-#score-display, #level-clears, #high-score-display{
-    height: 30px;
+#sidebar{
+    width: 80px;
 }
 
 #score, #level #clears, #high-score{
@@ -182,6 +195,7 @@ body, html{
 
 .message{
     text-transform: uppercase;
+    font-size: 0.75em;
 }
 
 #tetris-message{
