@@ -10,6 +10,7 @@ const scoreElement = document.getElementById('score');
 const clearsElement = document.getElementById('clears');
 const levelElement = document.getElementById('level');
 const startMessage = document.getElementById('start-message');
+const levelUpMessage = document.getElementById('level-up-message');
 const tetrisMessage = document.getElementById('tetris-message');
 const endMessage = document.getElementById('end-message');
 const resetMessage = document.getElementById('reset-message');
@@ -663,6 +664,11 @@ function levelCheck(){
     let temp = Math.floor((clears+10)/10);
     if(temp > level){
         level = temp;
+        // Level Up! animation
+        levelUpMessage.classList.add('flash');
+        setTimeout(function(){
+            levelUpMessage.classList.remove('flash');
+        }, 2000);
         // Audio
         let audio = new Audio('audio/levelUp.ogg');
         if(!+localStorage.getItem('muted')){

@@ -198,6 +198,7 @@ body, html{
     font-size: 0.75em;
 }
 
+#level-up-message, 
 #tetris-message{
     opacity: 0.1;
 }
@@ -211,6 +212,7 @@ body, html{
     100% {opacity: 0.1;}
 }
 
+#level-up-message.flash,
 #tetris-message.flash{
     animation-name: flash;
     animation-duration: 0.3s;
