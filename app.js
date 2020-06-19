@@ -717,7 +717,7 @@ function drop(){
 function resizeConsole() {
     let consoleElement = document.getElementById('console');
     let wrapperElement = document.getElementById('wrapper');
-    let consoleMargin = parseInt(getComputedStyle(consoleElement).margin);
+    let consoleMargin = parseInt(getComputedStyle(consoleElement).getPropertyValue('margin-top'));
     let consoleWidth = consoleElement.clientWidth + (consoleMargin*2);
     let consoleHeight = consoleElement.clientHeight + (consoleMargin*2);
 
